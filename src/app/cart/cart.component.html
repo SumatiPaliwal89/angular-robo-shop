@@ -1,4 +1,5 @@
 <h1 class="header">Your Cart</h1>
+<button class="cta" (click)="checkout.scrollIntoView({ behavior: 'smooth' })">Go to Checkout</button>
 <ul>
   @for (product of cartItems(); track product.id) {
   <li>
@@ -6,3 +7,6 @@
   </li>
   }
 </ul>
+<span #checkout>
+<button class='cta' >Checkout</button>
+</span>

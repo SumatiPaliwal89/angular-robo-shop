@@ -1,16 +1,24 @@
+@let p = product();
+@let avail = availableInventory();
+@let discountedPrice = p.price * (1 - p.discount) | currency: 'INR';
+
 <div class="details">
-  <img [src]="getImageUrl(product())" [alt]="product().name" />
+  <img [src]="getImageUrl(p)" [alt]="p.name" />
   <div>
-    <h2>{{ product().name }}</h2>
-    <p>{{ product().description }}</p>
-    <p>Part Type: {{ product().category }}</p>
-    <p>Available Inventory: {{ availableInventory() }}</p>
+    <h2>{{ p.name }}</h2>
+    <p>{{ p.description }}</p>
+    <p>Part Type: {{ p.category | categoryToPartType }}</p>
+    <p>Available Inventory: {{ avail}}
+      <span class="pill" [ngClass] = '{ "red": avail <= 1 , "yellow": avail > 1 && avail < 5}'>
+        {{avail | i18nPlural: inventoryMap}}
+      </span>
+    </p>
   </div>
 </div>
 <div class="price">
-  <p [ngClass]="getPriceClasses()">{{ product().price | currency }}</p>
-  @if (product().discount > 0) {
-  <p>{{ product().price * (1 - product().discount) | currency }}</p>
+  <p [ngClass]="getPriceClasses()">{{ p.price | currency : 'INR'}}</p>
+  @if (p.discount > 0) {
+  <p>{{ discountedPrice }}</p>
   }
   <button class="cta" (click)="addToCart()">Buy</button>
 </div>
