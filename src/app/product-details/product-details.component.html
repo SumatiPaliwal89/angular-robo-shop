@@ -13,6 +13,8 @@
         {{avail | i18nPlural: inventoryMap}}
       </span>
     </p>
+    <div> Favourite rating: {{ favourite() }}</div>
+    <bot-slider [(sliderValue)]="favourite"/>
   </div>
 </div>
 <div class="price">
@@ -20,5 +22,9 @@
   @if (p.discount > 0) {
   <p>{{ discountedPrice }}</p>
   }
-  <button class="cta" (click)="addToCart()">Buy</button>
+  @if(mode() === 'shop') {
+      <button class="cta" (click)="add()">Buy</button>
+  } @else{
+      <button class="remove" (click)="remove()">Remove</button>
+  }
 </div>

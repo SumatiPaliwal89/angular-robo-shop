@@ -64,6 +64,14 @@ a.cta:hover {
   color: #d25ca1;
 }
 
+.remove{
+  background-color: #d25ca1;
+}
+.remove:hover{
+  color: #f0bcd3;
+}
+
+
 ul {
   list-style-type: none;
   padding: 0;

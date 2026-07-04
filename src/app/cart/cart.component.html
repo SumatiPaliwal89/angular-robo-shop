@@ -1,12 +1,20 @@
+@let hasCartItems = cartItems().length > 0;
 <h1 class="header">Your Cart</h1>
-<button class="cta" (click)="checkout.scrollIntoView({ behavior: 'smooth' })">Go to Checkout</button>
+@if (hasCartItems){
+<button (click)="checkout.scrollIntoView({ behavior: 'smooth' })">Go to Checkout</button>
+}
 <ul>
-  @for (product of cartItems(); track product.id) {
+  @for (item of groupedCartItems(); track item.product.id) {
   <li>
-    <bot-cart-item [product]="product" />
+    <bot-product-details mode="cart" (removeFromCart)="removeFromCart($event)" [product]="item.product" />
+    <p class="quantity">Quantity: {{ item.quantity }}</p>
   </li>
+  } @empty {
+  <h2> Your cart is empty!</h2>
   }
 </ul>
 <span #checkout>
-<button class='cta' >Checkout</button>
+  @if(hasCartItems){
+  <button class='cta'>Checkout</button>
+  }
 </span>

@@ -1,18 +1,24 @@
-import { Component, signal, input } from '@angular/core';
+import { Component, signal, input, output, computed} from '@angular/core';
 import { IProduct } from '../product.model';
-import { CommonModule, I18nPluralPipe} from '@angular/common';
-import { CartService } from '../cart.service';
+import { CommonModule} from '@angular/common';
 import { CategoryToPartTypePipe } from '../../category-to-part-type-pipe';
+import { SliderComponent } from '../slider/slider.component';
+import { InventoryService } from '../inventory.service';
 
 @Component({
   selector: 'bot-product-details',
-  imports: [CommonModule, CategoryToPartTypePipe],
+  imports: [CommonModule, CategoryToPartTypePipe, SliderComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
 export class ProductDetailsComponent {
-  product = input<any>();
-  availableInventory = signal(5);
+  product = input.required<IProduct, IProduct>({transform: this.normaliseDiscount});
+  mode = input<'shop'|'cart'>('shop');
+  addToCart = output<IProduct>();
+  removeFromCart = output<IProduct>();
+  favourite=signal(0);
+
+  availableInventory = computed(() => this.inventoryService.get(this.product().id));
   inventoryMap = {
     '=0': 'Out of stock!',
     '=1': 'Only 1 item left',
@@ -22,15 +28,22 @@ export class ProductDetailsComponent {
     'other': 'Get yours today!'
   };
 
-  constructor(private cartService: CartService) { }
-
-  getImageUrl(product: IProduct) {
-    return '/images/robot-parts/' + product.imageName;
+  constructor(private inventoryService: InventoryService) { }
+  normaliseDiscount(product: IProduct) {
+    if (product.discount < 1){
+      return product;
+    }
+    return { ...product, discount: product.discount / 100 };
   }
 
-  addToCart() {
-    this.availableInventory.update((p) => p - 1);
-    this.cartService.addToCart(this.product());
+  add(){
+    this.addToCart.emit(this.product());
+  }
+  remove(){
+    this.removeFromCart.emit(this.product());
+  }
+  getImageUrl(product: IProduct) {
+    return '/images/robot-parts/' + product.imageName;
   }
 
   getPriceClasses() {
