@@ -1,4 +1,6 @@
 # JoesRobotShop
+<img width="1897" height="972" alt="image" src="https://github.com/user-attachments/assets/eec8116d-1290-4376-b329-baf74d868a0e" />
+<img width="1918" height="977" alt="image" src="https://github.com/user-attachments/assets/469e634a-fd18-4252-a5be-d4d45c48cf80" />
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0-next.9.
 
